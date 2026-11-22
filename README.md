@@ -55,3 +55,19 @@ python app.py
 
 # 3. Open in your browser
 [http://127.0.0.1:5000](http://127.0.0.1:5000)
+
+
+Team Credits (MIT WPU — B.Tech CSE)
+
+Chirag Jadhav — Member 1: Research & Data Filling (data_pipeline/ · Python)
+
+Aatish Das— Member 2: User Interface (templates/ · HTML / Jinja2)
+
+Mughdha kirve 3 — Member 3: Images, Colour Palette & Styling (static/ · CSS / SVG)
+
+Gaurav singh 4 — Member 4: Application Logic & Automated Browser Testing (app.py, test_flask.py · Python)
+
+(Team roster: Chirag Jadhav · Mugdha Kirve · Aatish Das · Gaurav Singh)
+
+Disclaimer
+All candidate figures are sourced from self-sworn Form 26 affidavits (ADR / MyNeta) and Election Commission of India (ECI) records. Declared criminal cases are pending cases as filed and do not imply conviction. This portal presents verified public facts without ranking or political endorsement
