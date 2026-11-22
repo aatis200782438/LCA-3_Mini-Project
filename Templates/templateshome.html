@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% set nav = 'home' %}
+{% block content %}
+    <h1 class="pageh">Maharashtra Assembly — who represents you</h1>
+    <p class="pagesub">All 288 sitting MLAs with their sworn affidavit details (assets, income sources' summary, criminal cases, education) and their 2024 election mandate. Click any MLA for the full profile — including <b>Chandrakant Patil (Kothrud)</b>, our fully-researched deep-dive example.</p>
+    <div class="stats">
+      <div class="stat"><div class="v">{{ stats.mlas }}</div><div class="l">Sitting MLAs</div><div class="s">288 constituencies</div></div>
+      <div class="stat"><div class="v">{{ stats.crore_pct }}%</div><div class="l">Crorepatis</div><div class="s">{{ stats.crorepatis }} of {{ stats.traced }} traced affidavits</div></div>
+      <div class="stat"><div class="v" style="color:var(--coral)">{{ stats.with_cases }}</div><div class="l">With declared cases</div><div class="s">{{ stats.serious }} serious (ADR criteria)</div></div>
+      <div class="stat"><div class="v">₹{{ stats.total_assets_cr }} Cr</div><div class="l">Combined declared assets</div><div class="s">of the whole house</div></div>
+      <div class="stat"><div class="v">{{ stats.women }}</div><div class="l">Women MLAs</div><div class="s">{{ stats.women_pct }}% of the house</div></div>
+      <div class="stat"><div class="v">{{ stats.candidates }}</div><div class="l">Candidates on record</div><div class="s">2024 general election</div></div>
+    </div>
+    <section class="panel">
+      <h2>Seat share by party</h2>
+      <p class="note">Current house (after the 2026 Baramati &amp; Rahuri bye-elections).</p>
+      {% for b in bars %}
+      <div class="pbrow"><span class="pl">{{ p_short(b.party) }}</span><div class="pbar"><i style="width:{{ b.width }}%;background:{{ b.color }}"></i></div><b>{{ b.seats }}</b></div>
+      {% endfor %}
+    </section>
+    <section class="panel">
+      <h2>Find your MLA</h2>
+      <form class="fbar" method="get" action="/home">
+        <input type="search" name="q" placeholder="Search name, constituency or district…" value="{{ q }}">
+        <select name="party" onchange="this.form.submit()">
+          <option value="">All parties</option>
+          {% for p in parties %}<option value="{{ p }}" {{ 'selected' if party == p }}>{{ p_full(p) }}</option>{% endfor %}
+        </select>
+        <select name="district" onchange="this.form.submit()">
+          <option value="">All districts</option>
+          {% for d in districts %}<option {{ 'selected' if district == d }}>{{ d }}</option>{% endfor %}
+        </select>
+        <select name="sort" onchange="this.form.submit()">
+          <option value="acno" {{ 'selected' if sort == 'acno' }}>Sort: Constituency no.</option>
+          <option value="assets" {{ 'selected' if sort == 'assets' }}>Sort: Assets ↓</option>
+          <option value="cases" {{ 'selected' if sort == 'cases' }}>Sort: Criminal cases ↓</option>
+          <option value="margin" {{ 'selected' if sort == 'margin' }}>Sort: Victory margin ↓</option>
+          <option value="votes" {{ 'selected' if sort == 'votes' }}>Sort: Votes ↓</option>
+          <option value="name" {{ 'selected' if sort == 'name' }}>Sort: Name A–Z</option>
+        </select>
+        <button type="submit" style="font-family:inherit;font-size:.88rem;padding:9px 16px;border:none;border-radius:10px;background:var(--marigold);color:var(--deep);font-weight:800;cursor:pointer">Go</button>
+      </form>
+      <div class="cardgrid">
+        {% for m in rows %}
+        <a class="mlacard" href="/mla/{{ m.cid }}">
+          <span class="mc-stamp">✓ ELECTED</span>
+          <div class="mc-top"><span class="chip"><span class="dot" style="background:{{ p_color(m.party) }}"></span>{{ p_short(m.party) }}</span></div>
+          <div class="mlacell"><div class="mavatar">{{ initials(m.name) }}</div><div><div class="mname">{{ m.name }}{% if m.cid in deep_ids %} <span class="badge green" style="font-size:.6rem">DEEP PROFILE</span>{% endif %}</div><div class="msub">{{ 'Bye-election 2026 · ' if m.bye }}{{ 'Woman MLA · ' if m.women }}{{ m.edu or '' }}</div></div></div>
+          <div class="mc-const"><b>AC {{ m.acno }} · {{ m.ac }}</b><div class="msub">{{ m.district }} district</div></div>
+          <div class="mc-stats">
+            <div class="mc-stat"><span class="mc-k">Assets</span><span class="mc-v">{{ cr(m.assets) }}</span></div>
+            <div class="mc-stat"><span class="mc-k">Cases</span><span class="cases {{ 'hot' if m.cases > 0 }}">{{ '—' if m.cases < 0 else m.cases }}</span></div>
+            <div class="mc-stat"><span class="mc-k">2024 margin</span><span class="mc-v">{% if m.bye %}<span class="badge amber" style="font-size:.6rem">bye 2026</span>{% else %}+{{ inr(m.margin) }}{% endif %}</span></div>
+          </div>
+        </a>
+        {% endfor %}
+      </div>
+      <p class="count" style="margin:10px 2px">Showing {{ rows | length }} of {{ stats.mlas }} MLAs · affidavit data via ADR/MyNeta · results via ECI · filtering &amp; sorting done in Python (Flask)</p>
+    </section>
+    <div class="srcbox">
+      <h3>Where this data comes from</h3>
+      <ul>
+        <li><b>Affidavits (assets, cases, education, age):</b> self-sworn Form 26 filings compiled by ADR / <a href="https://myneta.info/Maharashtra2024/" target="_blank" rel="noopener">MyNeta Maharashtra 2024</a>.</li>
+        <li><b>Results (votes, margins, runner-ups):</b> Election Commission of India counts, 2024 general election (20 Nov 2024).</li>
+        <li><b>Cross-check:</b> <a href="https://adrindia.org/sites/default/files/Maharashtra_Assembly_Elections_2024_Winning_Candidates_Report_FinalVer_English.pdf" target="_blank" rel="noopener">ADR winners' analysis (Nov 2024)</a> — 277 of 286 processed winners crorepatis, 188 with declared cases, 116 with serious cases.</li>
+        <li><b>Two partial records:</b> Awhad (Mumbra-Kalwa) and Jankar (Malshiras) — their affidavit summaries are missing from ADR/MyNeta's processed lists; assets shown from news reports of their filings, with last-known 2019 declarations noted on their profiles.</li>
+        <li><b>Bye-elections:</b> Baramati &amp; Rahuri were re-contested in 2026 — both current MLAs and both results are shown.</li>
+      </ul>
+    </div>
+{% endblock %}

@@ -1,0 +1,155 @@
+{% extends "base.html" %}
+{% set nav = 'home' %}
+{% block content %}
+    <div class="back"><a href="/home">&larr; All MLAs</a> · <a href="/ac/{{ m.acno }}">Constituency page: {{ m.ac }} →</a></div>
+    <div class="phead">
+      <div class="avatar">{{ initials(m.name) }}</div>
+      <div class="phmeta">
+        <div class="who">{{ m.name }}</div>
+        <div class="sub">{{ p_full(m.party) }} · {{ 'Elected in 2026 bye-election' if m.bye else 'Elected Nov 2024' }} · {{ m.ac }} ({{ m.acno }}), {{ m.district }} district{% if deep %} · <b>{{ deep.role }}</b>{% endif %}</div>
+        <div class="badges">
+          <span class="badge {{ '' if m.assets >= 10000000 else 'green' }}">{{ 'Crorepati' if m.assets >= 10000000 else 'Assets: ' + cr(m.assets) }}</span>
+          {% if m.cases > 0 %}<span class="badge red">{{ m.cases }} declared case{{ 's' if m.cases > 1 }}{{ ' · serious IPC sections' if m.serious }}</span>
+          {% elif m.cases == 0 %}<span class="badge green">No declared cases</span>
+          {% else %}<span class="badge">Cases: not traced</span>{% endif %}
+          {% if m.women %}<span class="badge">Woman MLA</span>{% endif %}
+          {% if m.age > 0 %}<span class="badge">Age {{ m.age }}</span>{% endif %}
+          <span class="badge">{{ m.edu }}</span>
+        </div>
+      </div>
+    </div>
+    <div class="stats">
+      <div class="stat"><div class="v">{{ cr(m.assets) }}</div><div class="l">Declared assets</div><div class="s">{{ ('2024 figures not traced — 2019: ' + cr(m.note2019.assets)) if (m.assets < 0 and m.note2019) else ('Form 26 affidavit' if m.assets >= 0 else 'not traced') }}</div></div>
+      <div class="stat"><div class="v">{{ cr(m.liab) }}</div><div class="l">Declared liabilities</div></div>
+      <div class="stat"><div class="v">{{ inr(m.votes) }}</div><div class="l">Votes polled</div><div class="s">{{ m.share }}% share</div></div>
+      <div class="stat"><div class="v" style="color:var(--teal)">+{{ inr(m.margin) }}</div><div class="l">Victory margin</div><div class="s">over {{ m.rcand }} ({{ p_short(m.rparty) }})</div></div>
+    </div>
+    <section class="panel">
+      <h2>Mandate — the 2024 result</h2>
+      <p class="note">{{ 'This seat was re-contested in a 2026 bye-election (see below). The 2024 general election result:' if m.bye else 'Election Commission of India count, 20 November 2024.' }}</p>
+      <div class="votebar"><div style="width:{{ vb.wpct }}%;background:{{ vb.wcolor }}">{{ vb.wlabel }} {{ vb.wpct }}%</div><div style="width:{{ vb.rpct }}%;background:#B9C9CE">{{ vb.rpct }}%</div></div>
+      <div class="twrap"><table>
+        <tr><th></th><th class="num">Votes</th><th class="num">Share</th></tr>
+        <tr class="winnerrow"><td><b>{{ m.name }}</b> — {{ p_full(m.party) }}</td><td class="num"><b>{{ inr(m.votes) }}</b></td><td class="num">{{ m.share }}%</td></tr>
+        <tr><td>{{ m.rcand }} — {{ p_full(m.rparty) }}</td><td class="num">{{ inr(m.rvotes) }}</td><td class="num">{{ c.rshare if c }}%</td></tr>
+      </table></div>
+      {% if m.bye and m.byeVotes %}<p class="note" style="margin-top:10px"><b>2026 bye-election:</b> {{ m.byeNote or '' }}</p>{% endif %}
+    </section>
+
+    {% if aff %}
+    <section class="panel">
+      <h2>Criminal record — case by case</h2>
+      {% if aff.v %}
+      <div class="rulebox" style="border-color:#B05540;background:#F7E8E1"><b>DECLARED CONVICTION{{ 'S' if aff.v | length > 1 }}:</b><p>{% for cv in aff.v %}{{ cv.punish or 'Convicted' }} — {{ cv.date or '' }}, {{ cv.court or '' }}. {{ cv.appeal or '' }}<br>{% endfor %}</p></div>
+      {% endif %}
+      {% if aff.c %}
+      <div class="twrap"><table>
+        <tr><th class="num">#</th><th>FIR / case</th><th>Court</th><th>Sections</th><th>Charges framed</th></tr>
+        {% for cs in aff.c %}
+        <tr><td class="num">{{ loop.index }}</td><td>{{ cs.fir or cs.no or '—' }}</td><td>{{ cs.court or '—' }}</td><td><b>{{ ((cs.law or '') ~ ' ' ~ (cs.sec or '')) | trim or '—' }}</b>{% if cs.oth %}<div class="msub">{{ cs.oth }}</div>{% endif %}</td><td>{{ cs.ch or '—' }}</td></tr>
+        {% endfor %}
+      </table></div>
+      <p class="note" style="margin-top:8px">{{ aff.c | length }} pending case{{ 's' if aff.c | length > 1 }} as declared in the sworn affidavit (Form 26){% if aff.v %} plus {{ aff.v | length }} conviction{{ 's' if aff.v | length > 1 }}{% endif %}. Section texts reproduced as filed.</p>
+      {% else %}
+      <p class="note">No criminal cases declared in the 2024 affidavit.</p>
+      {% endif %}
+    </section>
+    <section class="panel">
+      <h2>Income — declared in ITRs</h2>
+      {% if inc %}
+      <div class="vbar-wrap">{% for b in inc.bars %}<div class="vbar"><div class="bv">{{ b.value }}</div><div class="bar" style="height:{{ b.height }}px;background:{{ b.color }}"></div><div class="bl">{{ b.label }}</div></div>{% endfor %}</div>
+      <p class="note">Self income per Income Tax Return, as filed with the affidavit.{% if inc.spouse %} Spouse's latest declared income: <b>{{ inc.spouse.value }}</b> ({{ inc.spouse.fy }}).{% endif %}</p>
+      {% else %}
+      <p class="note">Income-declaration details were not readable in the processed record.</p>
+      {% endif %}
+    </section>
+    <section class="panel">
+      <h2>Assets — the full declaration</h2>
+      {% if growth %}<div class="rulebox"><b>Asset movement:</b><p>{{ growth.prev }} declared in 2019 → {{ cr(m.assets) }} in 2024 — {{ growth.pct }} across the term.</p></div>{% endif %}
+      <div class="twrap"><table>
+        <tr><th></th><th>Item (as declared)</th><th class="num">Value</th></tr>
+        <tr class="winnerrow"><td colspan="2"><b>Movable (cash, deposits, vehicles, jewellery…) — total</b></td><td class="num"><b>{{ cr(aff.mt) }}</b></td></tr>
+        {% for it in aff.m %}<tr><td></td><td>{{ it.d }}</td><td class="num">{{ cr(it.v) }}</td></tr>{% endfor %}
+        <tr class="winnerrow"><td colspan="2"><b>Immovable (land, buildings) — total</b></td><td class="num"><b>{{ cr(aff.it) }}</b></td></tr>
+        {% for it in aff.im %}<tr><td></td><td>{{ it.d }}</td><td class="num">{{ cr(it.v) }}</td></tr>{% endfor %}
+        <tr class="winnerrow"><td colspan="2"><b>Liabilities (loans, dues) — total</b></td><td class="num"><b>{{ cr(aff.lt) }}</b></td></tr>
+        {% for it in aff.l %}<tr><td></td><td>{{ it.d }}</td><td class="num">{{ cr(it.v) }}</td></tr>{% endfor %}
+      </table></div>
+      <p class="note" style="margin-top:8px">Breakdown as sworn in Form 26 — self, spouse and dependents combined.</p>
+    </section>
+    {% endif %}
+
+    <section class="panel">
+      <h2>Funds — allocated vs actually spent</h2>
+      <div class="rulebox"><b>How "actually spent" is counted:</b><p>Money is counted as actually spent only when the work it funded is <b>completed or near completion</b>. Sanctioned, tendered or under-construction amounts are shown as <b>Ambiguous</b>, never as spent.</p></div>
+      <div class="twrap"><table>
+        <tr><th>Year</th><th class="num">LAD fund allocated (state ceiling)</th><th class="num">Actually spent (counted per rule)</th></tr>
+        <tr><td>2019–20</td><td class="num">₹2 Cr</td><td class="num"><span class="status noupdate">Ambiguous</span></td></tr>
+        <tr><td>2020–21</td><td class="num">₹3 Cr <span style="color:var(--muted);font-size:.72rem">(hike partly deferred)</span></td><td class="num"><span class="status noupdate">Ambiguous</span></td></tr>
+        <tr><td>2021–22</td><td class="num">₹4 Cr</td><td class="num"><span class="status noupdate">Ambiguous</span></td></tr>
+        <tr><td>2022–23 → 2024–25</td><td class="num">₹5 Cr / year</td><td class="num"><span class="status noupdate">Ambiguous</span></td></tr>
+        <tr><td>2025–26</td><td class="num">₹5 Cr</td><td class="num"><span class="status inprogress">via e-Samarth pilot</span></td></tr>
+      </table></div>
+      <p class="note" style="margin:10px 0 0">Constituency-level fund utilization is not published by default; the state's e-Samarth platform (piloted in Pune from Sep 2025) now digitises proposals and payments. This MLA's certified spend figures will be filled from RTI replies and District Planning Committee records during the research phase. <a class="src" href="https://timesofindia.indiatimes.com/city/pune/state-govt-to-track-mla-funds-through-portal-pilot-in-pune/articleshow/123571905.cms" target="_blank" rel="noopener">[ToI — e-Samarth]</a></p>
+    </section>
+
+    <section class="panel">
+      <h2>Party pledges this MLA was elected on</h2>
+      {% if pledges %}
+      <p class="note">{{ pledges.name }} · manifesto released {{ pledges.when }} · <b>{{ pledges['items'] | length }} pledges tracked</b>{{ ' — ' + pledges.note if pledges.note }}</p>
+      <div class="twrap"><table>
+        <tr><th>Pledge</th><th>Status (verified Nov 2026)</th></tr>
+        {% for p in pledges['items'] %}
+        <tr><td>{{ p.t }}{% if p.d %}<div class="msub">{{ p.d }}</div>{% endif %}{% if p.src %} <a class="src" href="{{ p.src }}" target="_blank" rel="noopener">[{{ p.srcl }}]</a>{% endif %}</td><td><span class="status {{ p.cls }}">{{ p.s }}</span></td></tr>
+        {% endfor %}
+      </table></div>
+      <p class="note" style="margin-top:8px">Sources: {% for s in pledges.srcs %}<a class="src" href="{{ s.u }}" target="_blank" rel="noopener">[{{ s.l }}]</a> {% endfor %} · statuses verified against news and government records, Nov 2026.</p>
+      {% else %}
+      <p class="note">This member's party (regional party or independent) was not part of the Mahayuti or MVA joint manifesto platforms — no tracked pledge set applies.</p>
+      {% endif %}
+    </section>
+
+    {% if deep %}
+    <section class="panel">
+      <h2>Deep research — record &amp; works</h2>
+      <p class="note" style="margin-bottom:8px"><b>{{ deep.role }}</b></p>
+      <p class="note">{{ deep.bio }}</p>
+      <div class="twrap"><table style="margin-top:10px">
+        <tr><th>Work / record item</th><th>Status</th></tr>
+        {% for w in deep.works %}
+        <tr><td><b>{{ w.t }}</b>{% if w.d %}<div class="msub">{{ w.d }}</div>{% endif %}{% if w.src %} <a class="src" href="{{ w.src }}" target="_blank" rel="noopener">[{{ w.srcl }}]</a>{% endif %}</td><td><span class="status {{ w.cls }}">{{ w.s }}</span></td></tr>
+        {% endfor %}
+      </table></div>
+      {% if deep.flags %}
+      <h3 style="margin:16px 0 6px">Watch list — scrutiny &amp; controversies</h3>
+      {% for f in deep.flags %}
+      <div class="case" style="border-color:#E3C6B4"><div class="csechead"><span class="cyear" style="font-size:.95rem">{{ f.t }}</span></div><p>{{ f.d }} <a class="src" href="{{ f.src }}" target="_blank" rel="noopener">[{{ f.srcl }}]</a></p></div>
+      {% endfor %}
+      {% endif %}
+      {% if deep.docs %}
+      <div style="margin-top:14px">
+        {% for dc in deep.docs %}
+        <div class="doc"><span class="code">{{ dc.c }}</span><div><div class="dt"><a href="{{ dc.u }}" target="_blank" rel="noopener">{{ dc.t }}</a></div><div class="dm">{{ dc.m }}</div></div></div>
+        {% endfor %}
+      </div>
+      {% endif %}
+    </section>
+    {% else %}
+    <section class="panel">
+      <h2>Works &amp; promises — constituency record</h2>
+      <div class="pending">No consolidated public record of constituency works or MLA-fund utilisation could be traced for {{ m.ac }} — the funds panel above shows what is published (allocations, not certified spends). How we count and what exists publicly is explained in <a href="/how">how we work</a>. Fully-researched examples: <a href="/mla/1072">Chandrakant Patil (Kothrud)</a> and the 12 deep-research profiles linked from the home page.</div>
+    </section>
+    {% endif %}
+
+    <section class="panel">
+      <h2>Documents</h2>
+      {% set myn = myneta_cand(m.cid) %}
+      {% if myn %}
+      <div class="doc"><span class="code">FORM26</span><div><div class="dt"><a href="{{ myn }}" target="_blank" rel="noopener">Sworn affidavit — full details (assets, cases, ITR, education)</a></div><div class="dm">ADR / MyNeta · self-declared Form 26</div></div></div>
+      {% else %}
+      <div class="doc"><span class="code">GAP</span><div><div class="dt">Affidavit summary not in processed public lists</div><div class="dm">Last known declaration (2019): {{ cr(m.note2019.assets) if m.note2019 }} assets, {{ m.note2019.cases if m.note2019 }} cases — <a href="{{ m.note2019.url }}" target="_blank" rel="noopener">2019 affidavit</a>{% if m.assetsNoteSrc %} · 2024 assets per <a href="{{ m.assetsNoteSrc }}" target="_blank" rel="noopener">news report of the filing</a>{% endif %}</div></div></div>
+      {% endif %}
+      <div class="doc"><span class="code">ECI</span><div><div class="dt"><a href="{{ myneta_const(m.constId) }}" target="_blank" rel="noopener">All candidates &amp; affidavits — {{ m.ac }}</a></div><div class="dm">ADR / MyNeta constituency page</div></div></div>
+      <div class="doc"><span class="code">ADR</span><div><div class="dt"><a href="https://adrindia.org/sites/default/files/Maharashtra_Assembly_Elections_2024_Winning_Candidates_Report_FinalVer_English.pdf" target="_blank" rel="noopener">ADR analysis of 2024 winners</a></div><div class="dm">criminal, financial, education background</div></div></div>
+    </section>
+{% endblock %}

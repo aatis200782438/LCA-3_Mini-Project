@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% set nav = 'compare' %}
+{% block content %}
+  <h1 class="pageh">Compare MLAs</h1>
+  <p class="pagesub">Pick any two of the 288 sitting MLAs. Facts side by side — affidavit data and mandate; deep sections (funds, works, promises) exist for researched profiles.</p>
+  <section class="panel">
+    <form method="get" action="/compare">
+      <div class="compare-grid">
+        <select name="a" onchange="this.form.submit()" style="font-size:.9rem;padding:10px;border:1px solid var(--border);border-radius:10px">
+          {% for m in MLAS %}<option value="{{ m.cid }}" {{ 'selected' if m.cid == a.cid }}>{{ m.name }} — {{ m.ac }}</option>{% endfor %}
+        </select>
+        <select name="b" onchange="this.form.submit()" style="font-size:.9rem;padding:10px;border:1px solid var(--border);border-radius:10px">
+          {% for m in MLAS %}<option value="{{ m.cid }}" {{ 'selected' if m.cid == b.cid }}>{{ m.name }} — {{ m.ac }}</option>{% endfor %}
+        </select>
+      </div>
+    </form>
+    <div class="twrap"><table>
+      <tr><td><b>{{ a.name }}</b></td><th style="text-align:center">MLA</th><td><b>{{ b.name }}</b></td></tr>
+      <tr><td>{{ p_full(a.party) }}</td><th style="text-align:center">Party</th><td>{{ p_full(b.party) }}</td></tr>
+      <tr><td>{{ a.ac }} ({{ a.acno }})</td><th style="text-align:center">Constituency</th><td>{{ b.ac }} ({{ b.acno }})</td></tr>
+      <tr><td>{{ a.district }}</td><th style="text-align:center">District</th><td>{{ b.district }}</td></tr>
+      <tr><td>{{ cr(a.assets) }}{{ ' <span class="msub">(news-sourced)</span>' if a.assetsNoteSrc | safe }}</td><th style="text-align:center">Declared assets</th><td>{{ cr(b.assets) }}</td></tr>
+      <tr><td>{{ cr(a.liab) }}</td><th style="text-align:center">Declared liabilities</th><td>{{ cr(b.liab) }}</td></tr>
+      <tr><td>{{ 'not traced' if a.cases < 0 else a.cases ~ (' · serious IPC' if a.serious) }}</td><th style="text-align:center">Criminal cases (declared)</th><td>{{ 'not traced' if b.cases < 0 else b.cases ~ (' · serious IPC' if b.serious) }}</td></tr>
+      <tr><td>{{ a.edu }}</td><th style="text-align:center">Education</th><td>{{ b.edu }}</td></tr>
+      <tr><td>{{ a.age if a.age > 0 else '—' }}</td><th style="text-align:center">Age</th><td>{{ b.age if b.age > 0 else '—' }}</td></tr>
+      <tr><td>{{ inr(a.votes) }} ({{ a.share }}%)</td><th style="text-align:center">Votes 2024</th><td>{{ inr(b.votes) }} ({{ b.share }}%)</td></tr>
+      <tr><td>{{ 'bye 2026' if a.bye else '+' ~ inr(a.margin) }}</td><th style="text-align:center">Margin</th><td>{{ 'bye 2026' if b.bye else '+' ~ inr(b.margin) }}</td></tr>
+      <tr><td>{{ 'Yes' if a.women else 'No' }}</td><th style="text-align:center">Woman MLA</th><td>{{ 'Yes' if b.women else 'No' }}</td></tr>
+      <tr><td><a href="/mla/{{ a.cid }}">Open full profile →</a></td><th style="text-align:center">Profile</th><td><a href="/mla/{{ b.cid }}">Open full profile →</a></td></tr>
+    </table></div>
+    <p class="note" style="margin-top:10px">A declared case is not a conviction. Assets are self-declared affidavit figures.</p>
+  </section>
+{% endblock %}

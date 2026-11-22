@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% set nav = 'how' %}
+{% block content %}
+  <div class="back"><a href="/home">&larr; All MLAs</a></div>
+  <h1 class="pageh">How we work</h1>
+  <p class="pagesub">Every number on this portal is traceable to a public record. This page explains what we show, where each part comes from, and the rules we hold ourselves to.</p>
+  <section class="panel">
+    <h2>1 · Candidate profiles come from sworn affidavits</h2>
+    <p class="note" style="margin-bottom:8px">Assets, income, criminal cases, education and age are <b>self-declared in Form 26</b> filed with nomination papers. We do not retype them — we link each MLA to their affidavit record on <a href="https://myneta.info/Maharashtra2024/" target="_blank" rel="noopener">MyNeta (ADR)</a> and the <a href="https://affidavit.eci.gov.in/" target="_blank" rel="noopener">ECI Affidavit Portal</a>, which host the scanned originals. A declared case is not a conviction.</p>
+  </section>
+  <section class="panel">
+    <h2>2 · Funds are our core work — allocated vs actually spent</h2>
+    <div class="rulebox"><b>How "actually spent" is counted:</b><p>Money is counted as actually spent only when the work it funded is <b>completed or near completion</b>. Sanctioned, tendered or under-construction amounts are shown as <b>Ambiguous</b>, never as spent.</p></div>
+    <p class="note" style="margin-top:8px">Sources: state government resolutions (GRs) for the MLA Local Area Development Fund ceilings, utilisation certificates, District Planning Committee records and RTI replies. Since September 2025 the state's <b>e-Samarth</b> platform (modelled on the Centre's e-Sakshi for MPs) digitises MLA-fund proposals and payments — Pune is the pilot district.</p>
+  </section>
+  <section class="panel">
+    <h2>3 · Works are tracked to completion</h2>
+    <p class="note">Works come from municipal and District Planning Committee records and completion certificates. News reports are used as leads to verify, never as proof of completion.</p>
+  </section>
+  <section class="panel">
+    <h2>4 · Promises are matched to delivery</h2>
+    <p class="note">Each election manifesto ("Sankalpanama") is itemised and every item tracked: fulfilled, in progress, carried forward, or no public update found. "No public update found" means exactly that — not a judgement.</p>
+  </section>
+  <section class="panel">
+    <h2>Our rules</h2>
+    <div class="flag" style="border-color:var(--teal);background:var(--paleteal)"><span class="fi" style="color:#17897B">1</span><div><b style="color:#1F5F55">No source, no number</b><span>Anything we cannot trace to a public record is marked as not traced rather than estimated.</span></div></div>
+    <div class="flag" style="border-color:var(--teal);background:var(--paleteal)"><span class="fi" style="color:#17897B">2</span><div><b style="color:#1F5F55">Declared ≠ convicted</b><span>Criminal-case counts are self-declared affidavit data, shown as filed, with status where public.</span></div></div>
+    <div class="flag" style="border-color:var(--teal);background:var(--paleteal)"><span class="fi" style="color:#17897B">3</span><div><b style="color:#1F5F55">No ratings, no ranking, no endorsement</b><span>We present verified facts side by side; the voter concludes.</span></div></div>
+    <div class="flag" style="border-color:var(--teal);background:var(--paleteal)"><span class="fi" style="color:#17897B">4</span><div><b style="color:#1F5F55">Corrections welcome</b><span>If a figure or status is wrong, we fix it and note the correction.</span></div></div>
+  </section>
+  <section class="panel">
+    <h2>Data coverage right now</h2>
+    <div class="twrap"><table>
+      <tr><th>Dataset</th><th>Coverage</th><th>Source</th></tr>
+      <tr><td>MLA affidavit summaries</td><td>286 of 288 fully processed; 2 partial (Awhad — Mumbra-Kalwa, Jankar — Malshiras; their records are missing from ADR/MyNeta's processed lists — ADR's own analysis processed 286 affidavits)</td><td>ADR / MyNeta; news reports of filings</td></tr>
+      <tr><td>2024 results (votes, margins, runner-ups)</td><td>All 288 constituencies</td><td>Election Commission of India</td></tr>
+      <tr><td>2026 bye-elections</td><td>Baramati, Rahuri — both current MLAs and results shown</td><td>ECI counts; national bypoll coverage</td></tr>
+      <tr><td>All-candidate affidavit lists</td><td>4,144 candidates, all constituencies</td><td>ADR / MyNeta</td></tr>
+      <tr><td>Case-by-case criminal records, ITR income series, asset breakdowns</td><td>286 of 288 (partial for Awhad/Jankar) — parsed from the affidavit pages; every case count and asset total cross-validated</td><td>Sworn Form 26 filings via MyNeta</td></tr>
+      <tr><td>Party manifesto pledge tracker</td><td>All 288 MLAs mapped to their alliance platform (6 parties); delivery statuses verified Nov 2026</td><td>Party manifestos (Nov 2024) + news, govt &amp; court records</td></tr>
+      <tr><td>Funds, works, promises deep-research</td><td>13 of 288 completed — Kothrud (full example) + 12 leader profiles (CM, Deputy CMs, ministers, LoP, opposition leaders); every claim source-linked</td><td>GRs, RTI, news reports, court records</td></tr>
+    </table></div>
+  </section>
+{% endblock %
+{% extends "base.html" %}
+{% set nav = 'how' %}
+{% block content %}
+  <div class="back"><a href="/home">&larr; All MLAs</a></div>
+  <h1 class="pageh">How we work</h1>
+  <p class="pagesub">Every number on this portal is traceable to a public record. This page explains what we show, where each part comes from, and the rules we hold ourselves to.</p>
+  <section class="panel">
+    <h2>1 · Candidate profiles come from sworn affidavits</h2>
+    <p class="note" style="margin-bottom:8px">Assets, income, criminal cases, education and age are <b>self-declared in Form 26</b> filed with nomination papers. We do not retype them — we link each MLA to their affidavit record on <a href="https://myneta.info/Maharashtra2024/" target="_blank" rel="noopener">MyNeta (ADR)</a> and the <a href="https://affidavit.eci.gov.in/" target="_blank" rel="noopener">ECI Affidavit Portal</a>, which host the scanned originals. A declared case is not a conviction.</p>
+  </section>
+  <section class="panel">
+    <h2>2 · Funds are our core work — allocated vs actually spent</h2>
+    <div class="rulebox"><b>How "actually spent" is counted:</b><p>Money is counted as actually spent only when the work it funded is <b>completed or near completion</b>. Sanctioned, tendered or under-construction amounts are shown as <b>Ambiguous</b>, never as spent.</p></div>
+    <p class="note" style="margin-top:8px">Sources: state government resolutions (GRs) for the MLA Local Area Development Fund ceilings, utilisation certificates, District Planning Committee records and RTI replies. Since September 2025 the state's <b>e-Samarth</b> platform (modelled on the Centre's e-Sakshi for MPs) digitises MLA-fund proposals and payments — Pune is the pilot district.</p>
+  </section>
+  <section class="panel">
+    <h2>3 · Works are tracked to completion</h2>
+    <p class="note">Works come from municipal and District Planning Committee records and completion certificates. News reports are used as leads to verify, never as proof of completion.</p>
+  </section>
+  <section class="panel">
+    <h2>4 · Promises are matched to delivery</h2>
+    <p class="note">Each election manifesto ("Sankalpanama") is itemised and every item tracked: fulfilled, in progress, carried forward, or no public update found. "No public update found" means exactly that — not a judgement.</p>
+  </section>
+  <section class="panel">
+    <h2>Our rules</h2>
+    <div class="flag" style="border-color:var(--teal);background:var(--paleteal)"><span class="fi" style="color:#17897B">1</span><div><b style="color:#1F5F55">No source, no number</b><span>Anything we cannot trace to a public record is marked as not traced rather than estimated.</span></div></div>
+    <div class="flag" style="border-color:var(--teal);background:var(--paleteal)"><span class="fi" style="color:#17897B">2</span><div><b style="color:#1F5F55">Declared ≠ convicted</b><span>Criminal-case counts are self-declared affidavit data, shown as filed, with status where public.</span></div></div>
+    <div class="flag" style="border-color:var(--teal);background:var(--paleteal)"><span class="fi" style="color:#17897B">3</span><div><b style="color:#1F5F55">No ratings, no ranking, no endorsement</b><span>We present verified facts side by side; the voter concludes.</span></div></div>
+    <div class="flag" style="border-color:var(--teal);background:var(--paleteal)"><span class="fi" style="color:#17897B">4</span><div><b style="color:#1F5F55">Corrections welcome</b><span>If a figure or status is wrong, we fix it and note the correction.</span></div></div>
+  </section>
+  <section class="panel">
+    <h2>Data coverage right now</h2>
+    <div class="twrap"><table>
+      <tr><th>Dataset</th><th>Coverage</th><th>Source</th></tr>
+      <tr><td>MLA affidavit summaries</td><td>286 of 288 fully processed; 2 partial (Awhad — Mumbra-Kalwa, Jankar — Malshiras; their records are missing from ADR/MyNeta's processed lists — ADR's own analysis processed 286 affidavits)</td><td>ADR / MyNeta; news reports of filings</td></tr>
+      <tr><td>2024 results (votes, margins, runner-ups)</td><td>All 288 constituencies</td><td>Election Commission of India</td></tr>
+      <tr><td>2026 bye-elections</td><td>Baramati, Rahuri — both current MLAs and results shown</td><td>ECI counts; national bypoll coverage</td></tr>
+      <tr><td>All-candidate affidavit lists</td><td>4,144 candidates, all constituencies</td><td>ADR / MyNeta</td></tr>
+      <tr><td>Case-by-case criminal records, ITR income series, asset breakdowns</td><td>286 of 288 (partial for Awhad/Jankar) — parsed from the affidavit pages; every case count and asset total cross-validated</td><td>Sworn Form 26 filings via MyNeta</td></tr>
+      <tr><td>Party manifesto pledge tracker</td><td>All 288 MLAs mapped to their alliance platform (6 parties); delivery statuses verified Nov 2026</td><td>Party manifestos (Nov 2024) + news, govt &amp; court records</td></tr>
+      <tr><td>Funds, works, promises deep-research</td><td>13 of 288 completed — Kothrud (full example) + 12 leader profiles (CM, Deputy CMs, ministers, LoP, opposition leaders); every claim source-linked</td><td>GRs, RTI, news reports, court records</td></tr>
+    </table></div>
+  </section>
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% set nav = 'home' %}
+{% macro cand_table(roster, note) -%}
+<div class="twrap"><table>
+  <tr><th>Candidate</th><th>Party</th><th class="num">Cases</th><th>Education</th><th class="num">Age</th><th class="num">Assets</th><th class="num">Liabilities</th></tr>
+  {% for a in roster.cands %}
+  {% set cid, name, pi, cases, ei, age, assets, liab, won = a[0], a[1], a[2], a[3], a[4], a[5], a[6], a[7], a[8] %}
+  {% set myn = myneta_cand(cid) %}
+  <tr class="{{ 'winnerrow' if won }}">
+    <td>{% if won %}<span class="badge green">★ WINNER</span> {% endif %}<b>{{ name }}</b>{% if myn %} <a class="src" href="{{ myn }}" target="_blank" rel="noopener">[affidavit]</a>{% endif %}</td>
+    <td><span class="chip"><span class="dot" style="background:{{ p_color(DATA.meta.parties[pi]) }}"></span>{{ p_short(DATA.meta.parties[pi]) }}</span></td>
+    <td class="num"><span class="cases {{ 'hot' if cases > 0 }}">{{ '—' if cases < 0 else cases }}</span></td>
+    <td>{{ DATA.meta.edu[ei] }}</td>
+    <td class="num">{{ age if age > 0 else '—' }}</td>
+    <td class="num">{{ cr(assets) }}</td>
+    <td class="num">{{ cr(liab) }}</td>
+  </tr>
+  {% endfor %}
+</table></div>{% if note %}<p class="note" style="margin-top:8px">{{ note }}</p>{% endif %}
+{%- endmacro %}
+{% block content %}
+    <div class="back"><a href="/home">&larr; All MLAs</a></div>
+    <h1 class="pageh">{{ c.ac }}</h1>
+    <p class="pagesub">Constituency {{ c.acno }} · {{ c.district }} district · {{ reservation }}</p>
+    <section class="panel">
+      <h2>2024 result</h2>
+      <div class="votebar"><div style="width:{{ vb.wpct }}%;background:{{ vb.wcolor }}">{{ vb.wlabel }} {{ vb.wpct }}%</div><div style="width:{{ vb.rpct }}%;background:#B9C9CE">{{ vb.rpct }}%</div></div>
+      <div class="twrap"><table>
+        <tr><th></th><th class="num">Votes</th><th class="num">Share</th></tr>
+        <tr class="winnerrow"><td><b>{{ c.wcand }}</b> — {{ p_full(c.wparty) }}{% if winner %} — <a href="/mla/{{ winner.cid }}">MLA profile →</a>{% endif %}</td><td class="num">{{ inr(c.wvotes) }}</td><td class="num">{{ c.wshare }}%</td></tr>
+        <tr><td>{{ c.rcand }} — {{ p_full(c.rparty) }}</td><td class="num">{{ inr(c.rvotes) }}</td><td class="num">{{ c.rshare }}%</td></tr>
+      </table></div>
+      <p class="note" style="margin:8px 0 0">Margin: <b>+{{ inr(c.margin) }}</b> · ECI count, 20 Nov 2024.</p>
+      {% if c.bye %}<p class="note" style="margin:8px 0 0"><b>2026 bye-election:</b> {{ c.byeDetail.note if c.byeDetail }}</p>{% endif %}
+    </section>
+    {% if c.bye and c.ge %}
+    <section class="panel"><h2>Candidates — 2026 bye-election</h2>{{ cand_table(c.cur) }}</section>
+    <section class="panel"><h2>Candidates — 2024 general election</h2>{{ cand_table(c.ge) }}</section>
+    {% else %}
+    <section class="panel"><h2>All candidates — 2024 general election</h2>{{ cand_table(c.cur, c.rosterNote or 'Affidavit data via ADR/MyNeta.') }}</section>
+    {% endif %}
+    <section class="panel">
+      <h2>Documents</h2>
+      <div class="doc"><span class="code">ECI</span><div><div class="dt"><a href="https://results.eci.gov.in/" target="_blank" rel="noopener">Election Commission of India — results</a></div><div class="dm">official counts</div></div></div>
+      <div class="doc"><span class="code">MYN</span><div><div class="dt"><a href="{{ myneta_const(c.cur.id) }}" target="_blank" rel="noopener">MyNeta — {{ c.ac }} candidate affidavits</a></div><div class="dm">ADR-run affidavit repository</div></div></div>
+    </section>
+{% endblock %}

@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+{% set nav = 'home' %}
+{% block content %}
+    <div class="back"><a href="/home">&larr; All MLAs</a> · <a href="/ac/210">Constituency page: Kothrud →</a></div>
+    <div class="phead">
+      <div class="avatar">CP</div>
+      <div class="phmeta">
+        <div class="who">Chandrakant (Dada) Bachhu Patil</div>
+        <div class="sub">Bharatiya Janata Party · Kothrud (210), Pune · Sitting MLA (2019–) · Cabinet Minister: Higher &amp; Technical Education, Parliamentary Affairs <a class="src" href="https://www.hindustantimes.com/india-news/maharashtra-portfolio-allocation-fadnavis-keeps-home-full-list-of-ministers-101734804550841.html" target="_blank" rel="noopener">[HT, 21 Dec 2024]</a></div>
+        <div class="badges">
+          <span class="badge green" style="background:var(--paleteal);color:#17897B">FULLY RESEARCHED PROFILE</span>
+          <span class="badge red">2 criminal cases declared (affidavit)</span>
+          <span class="badge">Age 65 at filing · B.Com (1980)</span>
+        </div>
+      </div>
+    </div>
+    <div class="bio">{{ P.bio }} <a class="src" href="https://economictimes.indiatimes.com/news/politics-and-nation/rising-from-humble-beginnings-chandrakant-patil-becomes-maharashtra-minister-for-second-time/articleshow/93450706.cms" target="_blank" rel="noopener">[ET profile]</a> <a class="src" href="https://www.myneta.info/Maharashtra2024/candidate.php?candidate_id=1072" target="_blank" rel="noopener">[MyNeta affidavit]</a></div>
+    <div class="stats">
+      <div class="stat"><div class="v">₹8.94 Cr</div><div class="l">Declared assets (2024)</div><div class="s">₹6.00 Cr in 2019 → +49%</div></div>
+      <div class="stat"><div class="v" style="color:var(--coral)">2</div><div class="l">Criminal cases</div><div class="s">0 convictions · details below</div></div>
+      <div class="stat"><div class="v">1,59,234</div><div class="l">Votes polled 2024</div><div class="s">{{ P.mandate2024.share }}% of votes</div></div>
+      <div class="stat"><div class="v" style="color:var(--teal)">+1,12,041</div><div class="l">Victory margin 2024</div><div class="s">+25,495 in 2019</div></div>
+    </div>
+    <section class="panel">
+      <h2>Assets &amp; income — the affidavit slice</h2>
+      <p class="note">Two filings side by side, plus the five-year income trail from the ITR table. All self-declared, Form 26. <a class="src" href="https://www.myneta.info/Maharashtra2024/candidate.php?candidate_id=1072" target="_blank" rel="noopener">[MyNeta 2024]</a> <a class="src" href="https://www.myneta.info/compare_profile.php?group_id=7HLGsHtgmLA5Zj36rSG" target="_blank" rel="noopener">[2019↔2024 compare]</a></p>
+      <div class="astats">
+        <div class="astat"><div class="v">₹6.00 Cr</div><div class="l">Assets — 2019 filing</div></div>
+        <div class="astat"><div class="v">₹8.94 Cr</div><div class="l">Assets — 2024 filing</div></div>
+        <div class="astat"><div class="v" style="color:var(--coral)">+49%</div><div class="l">Growth between filings</div></div>
+        <div class="astat"><div class="v">₹21.7 L</div><div class="l">Liabilities (SBI loan)</div></div>
+        <div class="astat"><div class="v">₹53.6 L</div><div class="l">Self income — FY24 ITR</div></div>
+        <div class="astat"><div class="v">₹17.5 L</div><div class="l">Spouse income — FY24 ITR</div></div>
+      </div>
+      <h3 style="font-size:.95rem;margin:16px 0 2px">Self income across the term (ITR filed)</h3>
+      <div class="vbar-wrap">{% for b in inc_bars %}<div class="vbar"><div class="bv">{{ b.value }}</div><div class="bar" style="height:{{ b.height }}px;background:{{ b.color }}"></div><div class="bl">{{ b.label }}</div></div>{% endfor %}</div>
+      <p class="note" style="margin:6px 0 0">Self income rose <b>+86% across the term</b> (₹28.8 L → ₹53.6 L); spouse income FY24 ₹17.5 L. Immovable: agricultural land at Ambavane (Bhudargad, Kolhapur), commercial flat in Shahupuri, Kolhapur (spouse ₹78.3 L). Movable ₹5.47 Cr incl. bank FDs, cash ₹40,000, vehicles, jewellery.</p>
+    </section>
+    <section class="panel">
+      <h2>Mandate — what the voters said</h2>
+      <p class="note">Both elections from ECI counts. <a class="src" href="https://en.wikipedia.org/wiki/Kothrud_Assembly_constituency" target="_blank" rel="noopener">[Kothrud AC record]</a> <a class="src" href="https://www.ndtv.com/india-news/maharashtra-assembly-elections-2019-state-bjp-president-chandrakant-patil-wins-from-kothrud-2122283" target="_blank" rel="noopener">[NDTV 2019]</a> <a class="src" href="https://www.cnbctv18.com/india/politics/maharashtra-elections-2024-14-candidates-win-1-lakh-vote-margin-mahayuti-19513783.htm" target="_blank" rel="noopener">[CNBC-TV18 2024]</a></p>
+      <div class="vbar-wrap">{% for b in mand_bars %}<div class="vbar"><div class="bv">{{ b.value }}</div><div class="bar" style="height:{{ b.height }}px;background:{{ b.color }}"></div><div class="bl">{{ b.label }}</div></div>{% endfor %}</div>
+      <div class="twrap"><table>
+        <tr><th>Metric</th><th class="num">2019</th><th class="num">2024</th></tr>
+        <tr><td>Votes polled</td><td class="num">1,05,246 (53.9%)</td><td class="num"><b>1,59,234 ({{ P.mandate2024.share }}%)</b></td></tr>
+        <tr><td>Runner-up</td><td class="num">Kishore Shinde (MNS) 79,751</td><td class="num">Chandrakant Mokate (SS-UBT) 47,193</td></tr>
+        <tr><td>Margin</td><td class="num">+25,495</td><td class="num"><b>+1,12,041</b></td></tr>
+        <tr><td>Turnout / electors</td><td class="num">48.2% / 4,04,858</td><td class="num">52.8% / 4,40,676</td></tr>
+      </table></div>
+      <p class="note" style="margin:10px 0 0"><b>Assembly participation (questions, debates, attendance): no public per-MLA compilation exists for the Maharashtra Assembly</b> — a gap for the research phase.</p>
+    </section>
+    <section class="panel">
+      <h2>Flags raised</h2>
+      <p class="note">Automatic checks on the record — facts, not opinions.</p>
+      {% for f in P.flags %}<div class="flag"><span class="fi">&#9873;</span><div><b>{{ f.t }}</b><span>{{ f.d }}</span> {% if f.src %}<a class="src" href="{{ f.src }}" target="_blank" rel="noopener">[{{ f.srcl }}]</a>{% endif %}</div></div>{% endfor %}
+    </section>
+    <section class="panel">
+      <h2>Funds — allocated vs actually spent</h2>
+      <div class="rulebox"><b>How "actually spent" is counted:</b><p>Money is counted as actually spent only when the work it funded is <b>completed or near completion</b>. Sanctioned, tendered or under-construction amounts are shown as <b>Ambiguous</b>, never as spent.</p></div>
+      <div class="twrap"><table>
+        <tr><th>Financial year</th><th class="num">LAD fund allocated (ceiling)</th><th class="num">Actually spent (counted per rule)</th></tr>
+        {% for r in P.funds %}<tr><td>{{ r.y }}</td><td class="num">{{ r.a }}</td><td class="num"><span class="status {{ r.cls }}">{{ r.s }}</span></td></tr>{% endfor %}
+      </table></div>
+      <h3 style="font-size:.95rem;margin:16px 0 4px">Works the spending links to</h3>
+      <div class="twrap"><table>
+        <tr><th>Work</th><th>Status (drives the count)</th><th class="num">Publicly stated spend</th></tr>
+        {% for w in P.spendWorks %}<tr><td>{{ w.t }} <a class="src" href="{{ w.src }}" target="_blank" rel="noopener">[{{ w.srcl }}]</a></td><td><span class="status {{ w.cls }}">{{ w.s }}</span></td><td class="num">{{ w.amt }}</td></tr>{% endfor %}
+      </table></div>
+      <p class="note" style="margin:10px 0 0">Entitlement history: ₹2 Cr/yr → ₹3 Cr (GR, Mar 2021) → ₹4 Cr (2021–22) → ₹5 Cr from 2022-23. <a class="src" href="https://timesofindia.indiatimes.com/city/mumbai/cash-starved-govt-ups-mla-fund-by-1-crore-from-april/articleshow/90278915.cms" target="_blank" rel="noopener">[ToI]</a> <a class="src" href="https://archive.org/details/in.gov.maharashtra.gr.202102231152207516" target="_blank" rel="noopener">[GR]</a> Per-FY certified utilisation for Kothrud is not published; since Sep 2025 the e-Samarth platform digitises proposals and payments (Pune pilot) — ToI reported in Feb 2026 that funds under the new system were yet to reach Pune MLAs five months in. <a class="src" href="https://timesofindia.indiatimes.com/city/pune/five-months-after-e-samarth-rollout-pune-mlas-yet-to-receive-development-funds/articleshow/128574243.cms" target="_blank" rel="noopener">[ToI, Feb 2026]</a></p>
+    </section>
+    <section class="panel">
+      <h2>Development works — where the money went</h2>
+      <p class="note">Constituency-level actions from news reports and official announcements; each carries its source.</p>
+      <div class="twrap"><table>
+        <tr><th>Work / action</th><th>Detail</th><th>Status</th></tr>
+        {% for w in P.works %}<tr><td><b>{{ w.t }}</b></td><td>{{ w.d }} {% if w.src %}<a class="src" href="{{ w.src }}" target="_blank" rel="noopener">[{{ w.srcl }}]</a>{% endif %}</td><td><span class="status {{ w.cls }}">{{ w.s }}</span></td></tr>{% endfor %}
+      </table></div>
+    </section>
+    <section class="panel">
+      <h2>Criminal record — self-declared, Form 26</h2>
+      <p class="note">Exactly as filed in the 2024 affidavit. A declared case is not a conviction. <a class="src" href="https://www.myneta.info/Maharashtra2024/candidate.php?candidate_id=1072" target="_blank" rel="noopener">[MyNeta — scanned affidavit data]</a></p>
+      {% for c in P.cases %}
+      <div class="case">
+        <div class="csechead"><span class="cyear">{{ c.t }}</span><span class="csec">{{ c.sec }}</span><span class="status {{ c.cls }}" style="margin-left:auto">{{ c.s }}</span></div>
+        <p>{{ c.d }}</p>
+        <div class="ccourt">{{ c.court }} {% if c.src %}<a class="src" href="{{ c.src }}" target="_blank" rel="noopener">[{{ c.srcl }}]</a>{% endif %}</div>
+      </div>
+      {% endfor %}
+    </section>
+    <section class="panel">
+      <h2>Promises vs delivery</h2>
+      <p class="note">From his own 2019 'Sankalpanama' (constituency manifesto) — tracked against available reporting as of Aug 2026. <a class="src" href="https://www.hindustantimes.com/cities/chandrakant-patil-s-kothrud-manifesto-focuses-on-traffic-infrastructure-garbage-problems/story-Zwjp71K6vxpEq6U5BHrWTP.html" target="_blank" rel="noopener">[HT manifesto]</a> <a class="src" href="https://timesofindia.indiatimes.com/city/pune/maharashtra-assembly-elections-bjp-promises-elderly-safety-green-protection-in-kothrud/articleshow/71620318.cms" target="_blank" rel="noopener">[ToI/PTI]</a></p>
+      <div class="donut-wrap">
+        <svg width="130" height="130" viewBox="0 0 42 42">{% for s in donut %}<circle cx="21" cy="21" r="15.5" fill="none" stroke="{{ s.color }}" stroke-width="7" stroke-dasharray="{{ s.len }} {{ s.rest }}" stroke-dashoffset="{{ s.off }}" transform="rotate(-90 21 21)"/>{% endfor %}</svg>
+        <div class="legend">
+          <div><i style="background:#2A9D8F"></i> In progress — {{ P.promiseStats[0] }}</div>
+          <div><i style="background:#E98A2B"></i> Carried forward — {{ P.promiseStats[1] }}</div>
+          <div><i style="background:#C9C2B4"></i> No public update — {{ P.promiseStats[2] }}</div>
+        </div>
+      </div>
+      <div class="twrap"><table>
+        <tr><th>2019 promise</th><th>Status per available reporting</th></tr>
+        {% for p in P.promises %}<tr><td>{{ p.t }}</td><td><span class="status {{ p.cls }}">{{ p.s }}</span>{{ ' — ' + p.d if p.d }}</td></tr>{% endfor %}
+      </table></div>
+      <p class="note" style="margin:10px 0 0">2024-term promises (announced): metro extension to Chandni Chowk · airport shuttle · CCTV network · Ram Nadi &amp; Pashan Lake conservation · Omkareshwar Ghat upgrades · Gadima Memorial · co-working spaces · solar adoption. <a class="src" href="https://www.mypunepulse.com/chandrakant-patils-vision-to-transform-kothrud/" target="_blank" rel="noopener">[PunePulse — secondary; verify against printed manifesto]</a></p>
+    </section>
+    <section class="panel">
+      <h2>Documents — every number, sourced</h2>
+      <p class="note">{{ P.docs | length }} records behind this profile. Key ones:</p>
+      {% for d in P.docs %}<div class="doc"><span class="code">{{ d.c }}</span><div><div class="dt"><a href="{{ d.u }}" target="_blank" rel="noopener">{{ d.t }}</a></div><div class="dm">{{ d.m }}</div></div></div>{% endfor %}
+    </section>
+    <p style="font-size:.75rem;color:var(--muted);margin:18px 2px">Compiled 24 Aug 2026 from the cited public sources. Amounts as declared/reported. The full source list lives in the team's research dossier.</p>
+{% endblock %}

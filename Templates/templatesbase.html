@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>{% block title %}Know Your Leader — Maharashtra Assembly · Real Data{% endblock %}</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+<link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='img/favicon.svg') }}">
+</head>
+<body>
+  <nav>
+    <a class="brand" href="/home"><span class="tick">&#9745;</span> Know Your Leader <span style="font-size:.62rem;background:var(--marigold);color:var(--deep);border-radius:6px;padding:2px 7px;font-weight:800">REAL DATA</span></a>
+    <div class="links">
+      <a href="/home" class="{{ 'on' if nav == 'home' }}">MLAs</a>
+      <a href="/how" class="{{ 'on' if nav == 'how' }}">How we work</a>
+      <a href="/compare" class="{{ 'on' if nav == 'compare' }}">Compare</a>
+    </div>
+  </nav>
+  <main>
+  {% block content %}{% endblock %}
+  </main>
+  <footer>
+    <b>&#9745; Know Your Leader — Maharashtra Assembly transparency portal</b><br>
+    Affidavit data: ADR / MyNeta (self-sworn Form 26) · Results: Election Commission of India · Deep profiles: cited news &amp; government records<br>
+    Team: Chirag Jadhav · Mugdha Kirve · Aatish Das · Gaurav Singh — MIT WPU · SDG 16 · Digital India · Compiled 24 Aug 2026<br>
+    <span style="color:#8FA6AD">Declared cases are not convictions. No ranking or endorsement — verified facts only.</span>
+  </footer>
+</body>
+</html>
